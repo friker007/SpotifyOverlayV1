@@ -7,24 +7,25 @@ function formatTime(ms) {
 }
 
 function AdminPanel() {
-  const defaultPassword = process.env.REACT_APP_ADMIN_PASSWORD || '';
-  const [password, setPassword] = useState(defaultPassword);
+  const [password, setPassword] = useState(process.env.REACT_APP_ADMIN_PASSWORD || '');
   const [authorized, setAuthorized] = useState(false);
   const [tokens, setTokens] = useState({});
   const [error, setError] = useState('');
   const [showAccess, setShowAccess] = useState({});
   const [showRefresh, setShowRefresh] = useState({});
 
+  const API_BASE = process.env.REACT_APP_API_URL || 'https://spotifyoverlayv1-production.up.railway.app';
+
   const fetchTokens = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/tokens', {
+      const response = await axios.post(`${API_BASE}/api/admin/tokens`, {
         password,
       });
       setTokens(response.data);
       setAuthorized(true);
       setError('');
     } catch (err) {
-      setError('❌ Incorrect admin password or error fetching data');
+      setError('❌ Incorrect admin password or server error');
       setAuthorized(false);
     }
   };
@@ -39,7 +40,7 @@ function AdminPanel() {
 
   const removeUser = async (userId) => {
     try {
-      await axios.post('http://localhost:5000/api/admin/remove', {
+      await axios.post(`${API_BASE}/api/admin/remove`, {
         password,
         user_id: userId,
       });
@@ -53,7 +54,7 @@ function AdminPanel() {
 
   const manualRefresh = async (userId) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/admin/refresh', {
+      const res = await axios.post(`${API_BASE}/api/admin/refresh`, {
         password,
         user_id: userId,
       });
