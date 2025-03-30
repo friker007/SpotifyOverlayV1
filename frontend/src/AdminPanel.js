@@ -7,7 +7,8 @@ function formatTime(ms) {
 }
 
 function AdminPanel() {
-  const [password, setPassword] = useState('');
+  const defaultPassword = process.env.REACT_APP_ADMIN_PASSWORD || '';
+  const [password, setPassword] = useState(defaultPassword);
   const [authorized, setAuthorized] = useState(false);
   const [tokens, setTokens] = useState({});
   const [error, setError] = useState('');
