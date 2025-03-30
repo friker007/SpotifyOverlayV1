@@ -31,7 +31,7 @@ function App() {
     hasSentToken.current = true;
 
     axios
-      .post('http://localhost:5000/api/get-token', {
+      .post(`${process.env.REACT_APP_BACKEND}/api/get-token`, {
         code,
         user_id: userId,
       })
